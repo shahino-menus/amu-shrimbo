@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>عمو شريمبو | Amu Shrimbo — الطعم اللي يظبط المزاج</title>
+<meta name="description" content="منيو مطعم عمو شريمبو للمأكولات البحرية في خميس مشيط — صواني، أكياس سي فود، طواجن، باستا وشوربات. اطلب عبر واتساب 0594030858">
+<meta name="theme-color" content="#082a52">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<style>
+:root{--navy:#082a52;--navy2:#0b3a6e;--navy3:#061e3c;--gold:#d9a441;--gold2:#f0c75e;--cream:#fff6e3;--muted:#bcd0e8;--card:rgba(255,255,255,.06);--line:rgba(217,164,65,.45)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:linear-gradient(180deg,var(--navy2),var(--navy) 30%,var(--navy3));color:var(--cream);min-height:100vh}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px 110px}
+.hero{text-align:center;padding:26px 10px 8px}
+.logo{width:235px;height:auto;object-fit:contain;border-radius:26px;border:3px solid var(--gold);box-shadow:0 10px 30px rgba(0,0,0,.45);background:var(--navy)}
+.hero h1{font-size:34px;color:var(--gold2);margin-top:12px;letter-spacing:.5px}
+.hero .en{font-size:15px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.slogan{font-size:19px;color:var(--cream);margin:8px 0 14px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--cream);background:rgba(0,0,0,.18)}
+.cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.btn{border:none;cursor:pointer;border-radius:999px;padding:12px 22px;font-size:15px;font-weight:700;font-family:inherit}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#3a2703}
+.btn-ghost{background:transparent;border:1.5px solid var(--gold);color:var(--gold2)}
+.food{width:100%;max-height:300px;object-fit:cover;border-radius:18px;border:2px solid var(--line);display:block}
+.searchbar{position:sticky;top:0;z-index:30;background:rgba(6,30,60,.96);padding:10px 0 8px;margin-top:14px}
+.searchbar input{width:100%;padding:12px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:#123;font-size:15px;font-family:inherit;outline:none}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 4px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.catbtn{flex:0 0 auto;border:1.5px solid var(--line);background:rgba(0,0,0,.2);color:var(--cream);border-radius:999px;padding:8px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.catbtn.active{background:var(--gold);color:#3a2703;border-color:var(--gold)}
+section{margin-top:26px;scroll-margin-top:130px}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.sec-title h2{font-size:22px;color:var(--gold2)}
+.sec-title .rule{flex:1;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+.sec-note{color:var(--muted);font-size:13.5px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.card h3{font-size:17px;color:#fff}
+.card p{font-size:13.5px;color:var(--muted);line-height:1.7;flex:1}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700}
+.pill-price{background:var(--gold);color:#3a2703}
+.pill-cal{border:1px solid var(--line);color:var(--muted)}
+.addrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.addbtn{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#3a2703;border:none;border-radius:999px;padding:9px 20px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
+.qty{display:flex;align-items:center;gap:10px}
+.qty button{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--gold);background:transparent;color:var(--gold2);font-size:18px;cursor:pointer}
+.qty b{min-width:18px;text-align:center}
+.allergens{display:flex;flex-wrap:wrap;gap:8px}
+.allergens span{border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--muted)}
+footer{margin-top:40px;text-align:center;color:var(--muted);font-size:13.5px;line-height:2}
+footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;display:inline-block}
+.wave{display:block;width:100%;height:34px;margin-top:18px}
+.cartbar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:min(94vw,560px);z-index:50}
+.cartbar button{width:100%;padding:15px;border:none;border-radius:16px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#3a2703;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 10px 26px rgba(0,0,0,.5)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:60;display:none;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.sheet{background:#0a2f5c;width:min(96vw,620px);max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;border:1.5px solid var(--line);border-bottom:none;padding:18px}
+.sheet h2{color:var(--gold2);font-size:20px;margin-bottom:12px}
+.citem{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed rgba(217,164,65,.3);font-size:14px}
+.citem .sub{color:var(--muted);font-size:12.5px}
+.totals{display:flex;justify-content:space-between;font-size:16px;font-weight:800;color:var(--gold2);padding:12px 0}
+.form{display:grid;gap:10px;margin-top:6px}
+.form input,.form textarea,.form select{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:#123;font-size:14.5px;font-family:inherit}
+.radio{display:flex;gap:8px}
+.radio label{flex:1;text-align:center;border:1.5px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;font-size:14px}
+.radio input{display:none}
+.radio label.sel{background:var(--gold);color:#3a2703;font-weight:800}
+.sauces{display:grid;gap:8px;margin:10px 0}
+.sauces button{padding:12px;border-radius:12px;border:1.5px solid var(--line);background:rgba(0,0,0,.2);color:var(--cream);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.sauces button.sel{background:var(--gold);color:#3a2703}
+.closebtn{background:transparent;border:1.5px solid var(--line);color:var(--cream);border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit;font-weight:700}
+.empty{text-align:center;color:var(--muted);padding:22px 0;font-size:14.5px}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#fff;color:#123;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:700;z-index:70;display:none;box-shadow:0 8px 22px rgba(0,0,0,.4)}
+.noresult{text-align:center;color:var(--muted);padding:30px 0;display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <img class="logo" src="assets/logo.png" alt="لوجو عمو شريمبو">
+    <h1>عمو شريمبو</h1>
+    <div class="en">Amu Shrimbo</div>
+    <div class="slogan">الطعم اللي يظبط المزاج 🦐</div>
+    <div class="chips">
+      <span class="chip">📍 خميس مشيط — شارع 60، مقابل مستوصف الأسرة</span>
+      <span class="chip">🛵 التوصيل عبر نينجا وهنجرستيشن</span>
+      <span class="chip">📞 <span dir="ltr">0594 030 858</span></span>
+    </div>
+    <div class="cta">
+      <a class="btn btn-gold" href="https://wa.me/966594030858?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B7%D9%84%D8%A8%20%D9%85%D9%86%20%D8%B9%D9%85%D9%88%20%D8%B4%D8%B1%D9%8A%D9%85%D8%A8%D9%88" target="_blank" rel="noopener">اطلب واتساب</a>
+      <a class="btn btn-ghost" href="tel:+966594030858">اتصال بالمطعم</a>
+      <button class="btn btn-ghost" id="installBtn" style="display:none">تثبيت التطبيق</button>
+    </div>
+    <img class="food" src="assets/food.jpg" alt="أطباق عمو شريمبو البحرية">
+  </header>
+
+  <div class="searchbar">
+    <input id="search" type="search" placeholder="ابحث عن طبق… مثال: جمبري، صينية، باستا">
+    <nav class="cats" id="cats"></nav>
+  </div>
+
+  <main id="menu"></main>
+  <div class="noresult" id="noresult">لا توجد نتائج مطابقة لبحثك — جرّب كلمة أخرى.</div>
+
+  <section id="allergens">
+    <div class="sec-title"><h2>مسببات الحساسية</h2><div class="rule"></div></div>
+    <p class="sec-note">إذا عندك حساسية من أي مكوّن، بلّغنا عند الطلب وسنساعدك تختار المناسب.</p>
+    <div class="allergens">
+      <span>رخويات</span><span>أسماك</span><span>قشريات</span><span>خردل</span><span>بذور سمسم</span><span>حبوب</span><span>كرفس</span><span>فول صويا</span><span>حليب</span>
+    </div>
+  </section>
+
+  <footer>
+    <div>عمو شريمبو — الطعم اللي يظبط المزاج</div>
+    <div>خميس مشيط، شارع 60، مقابل مستوصف الأسرة</div>
+    <a class="phone" href="tel:+966594030858">0594 030 858</a>
+    <div>الأسعار بالريال السعودي وتشمل ضريبة القيمة المضافة — رسوم التوصيل تُحسب عند تأكيد الطلب</div>
+    <svg class="wave" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 12 Q 12 4 25 12 T 50 12 T 75 12 T 100 12" fill="none" stroke="#d9a441" stroke-width="1.6"/><path d="M0 17 Q 12 9 25 17 T 50 17 T 75 17 T 100 17" fill="none" stroke="#d9a441" stroke-width="1" opacity=".6"/></svg>
+  </footer>
+</div>
+
+<div class="cartbar" id="cartbar" style="display:none"><button id="openCart"></button></div>
+
+<div class="overlay" id="sauceOverlay">
+  <div class="sheet">
+    <h2 id="sauceTitle">اختر الصوص</h2>
+    <div class="sauces" id="sauceList"></div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-gold" id="sauceConfirm" style="flex:1">أضف للسلة</button>
+      <button class="closebtn" data-close="sauceOverlay">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="cartOverlay">
+  <div class="sheet">
+    <h2>سلة الطلبات 🧺</h2>
+    <div id="cartItems"></div>
+    <div class="totals"><span>الإجمالي</span><span id="cartTotal"></span></div>
+    <div class="form">
+      <input id="custName" placeholder="الاسم">
+      <input id="custPhone" inputmode="tel" placeholder="رقم الجوال">
+      <div class="radio">
+        <label id="lblPickup" class="sel"><input type="radio" name="otype" value="استلام من المطعم" checked>استلام من المطعم</label>
+        <label id="lblDelivery"><input type="radio" name="otype" value="توصيل">توصيل</label>
+      </div>
+      <input id="custAddr" placeholder="العنوان (للتوصيل)" style="display:none">
+      <textarea id="custNotes" rows="2" placeholder="ملاحظات على الطلب (اختياري)"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn btn-gold" id="sendOrder" style="flex:1">إرسال الطلب واتساب</button>
+      <button class="closebtn" data-close="cartOverlay">متابعة التصفح</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WA="966594030858";
+const SAUCES_BAGS=["كيجن","فلفل ليمون","كريمة","زبدة وثوم"];
+const SAUCES_TAJIN=["حمر","طحينة","كريمة","طماطم"];
+const MENU=[
+ {id:"trays",name:"الصواني",note:"صواني بحرية مشكّلة تكفي وتزيد — كل صينية معها أرز وبطاطس.",items:[
+  {n:"صينية عمو شريمبو",d:"سمكة قاروص، دنيس مقلي، 8 جمبري مشوي، 8 جمبري مقلي، 5 فيليه مقلي، بطاطس، فرشة أرز",p:130,c:4532,hot:1},
+  {n:"صينية قاروص",d:"سمكة قاروص سنجاري، 8 جمبري، 3 فيليه مقلي، أرز، بطاطس",p:65,c:1950},
+  {n:"صينية الدنيس",d:"سمكة دنيس زيت وليمون، 3 فيليه مقلي، 8 جمبري مقلي، أرز، بطاطس",p:65,c:1650},
+  {n:"صينية المزجنجي",d:"سمكة بوري سنجاري، سمكة بربوني مقلي، 8 جمبري مقلي، أرز، بطاطس",p:70,c:1900},
+  {n:"صينية سالمون",d:"2 قطعة سالمون، 8 جمبري مشوي، أرز، بطاطس",p:59,c:1430}]},
+ {id:"bags",name:"أكياس عمو شريمبو",note:"الصوص من اختيارك: كيجن، فلفل ليمون، كريمة، أو زبدة وثوم.",items:[
+  {n:"كيس جمبري",d:"جمبري بصوص من اختيارك",p:54,c:380,sauce:"bags"},
+  {n:"كيس سمك",d:"سمك بصوص من اختيارك",p:47,c:340,sauce:"bags"},
+  {n:"كيس محار",d:"محار بصوص من اختيارك",p:49,c:490,sauce:"bags"},
+  {n:"كيس كراب",d:"كراب بصوص من اختيارك",p:48,c:300,sauce:"bags"},
+  {n:"كيس مكس",d:"تشكيلة بحرية بصوص من اختيارك",p:134,c:680,sauce:"bags",hot:1}]},
+ {id:"soups",name:"الشوربات",items:[
+  {n:"شوربة عمو شريمبو بالكريمة",d:"شوربة كريمية غنية بالمأكولات البحرية",p:16,c:280},
+  {n:"شوربة جمبري",d:"شوربة جمبري خفيفة ولذيذة",p:16,c:260}]},
+ {id:"hot",name:"المقبلات الساخنة",items:[
+  {n:"ديناميت شريمبو",d:"جمبري ديناميت بصوص حار",p:26,c:650,hot:1},
+  {n:"سلة سمك",d:"قطع سمك مقلية مقرمشة",p:24,c:610},
+  {n:"سلة جمبري",d:"جمبري مقلي مقرمش",p:25,c:520},
+  {n:"سلة كاليماري",d:"كاليماري مقلي مقرمش",p:22,c:580},
+  {n:"بطاطس",d:"بطاطس مقلية",p:7,c:380}]},
+ {id:"pasta",name:"الباستا",items:[
+  {n:"باستا ثمار البحر",d:"باستا بثمار البحر",p:18,c:820},
+  {n:"اسباغيتي جمبري",d:"اسباغيتي بالجمبري",p:18,c:825}]},
+ {id:"tajin",name:"الطواجن",note:"الصوص من اختيارك: حمر، طحينة، كريمة، أو طماطم.",items:[
+  {n:"طاجن جمبري",d:"طاجن جمبري بصوص من اختيارك",p:30,c:450,sauce:"tajin"},
+  {n:"طاجن سمك فيليه",d:"طاجن فيليه سمك بصوص من اختيارك",p:25,c:420,sauce:"tajin"}]},
+ {id:"salads",name:"السلطات",items:[
+  {n:"حمر",d:"حمر حامض",p:4,c:120},
+  {n:"سلطة خضراء",d:"سلطة خضراء طازجة",p:5,c:180},
+  {n:"سلطة جرجير",d:"سلطة جرجير",p:5,c:280},
+  {n:"سلطة طحينة",d:"طحينة",p:4,c:220}]},
+ {id:"rice",name:"الأرز",items:[
+  {n:"أرز صيادية",d:"أرز صيادية بالبصل والبهارات",p:7,c:275},
+  {n:"أرز أبيض",d:"أرز أبيض",p:6,c:300}]},
+ {id:"fishkg",name:"أسماك بالكيلو",note:"السعر حسب سعر اليوم — يُؤكَّد عند الطلب. اختر نوع السمك وطريقة التحضير في الملاحظات.",items:[
+  {n:"بوري (كيلو)",d:"سعر اليوم",p:null,c:null},{n:"دنيس (كيلو)",d:"سعر اليوم",p:null,c:null},
+  {n:"قاروص (كيلو)",d:"سعر اليوم",p:null,c:null},{n:"سالمون (كيلو)",d:"سعر اليوم",p:null,c:null},
+  {n:"بربوني (كيلو)",d:"سعر اليوم",p:null,c:null},{n:"شعور (كيلو)",d:"سعر اليوم",p:null,c:null},
+  {n:"هامور (كيلو)",d:"سعر اليوم",p:null,c:null},{n:"بلطي (كيلو)",d:"سعر اليوم",p:null,c:null},
+  {n:"جمبري وسط / كبير (كيلو)",d:"سعر اليوم",p:null,c:null}]},
+ {id:"drinks",name:"المشروبات",items:[
+  {n:"مشروب غازي",d:"",p:3,c:null},{n:"عصير",d:"",p:3,c:null},{n:"مياه",d:"",p:1,c:null}]}
+];
+const ALL={}; MENU.forEach(s=>s.items.forEach(it=>ALL[it.n]=it));
+let cart={}; try{cart=JSON.parse(localStorage.getItem("amu_cart")||"{}")}catch(e){}
+const $=id=>document.getElementById(id);
+const money=v=>v+" ريال";
+function keyOf(n,sauce){return sauce?n+"|"+sauce:n}
+function qtyOf(n){let q=0;Object.keys(cart).forEach(k=>{if(k===n||k.startsWith(n+"|"))q+=cart[k]});return q}
+function saveCart(){localStorage.setItem("amu_cart",JSON.stringify(cart))}
+function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",1800)}
+
+function renderCats(){
+  $("cats").innerHTML=MENU.map(s=>`<button class="catbtn" data-cat="${s.id}">${s.name}</button>`).join("");
+  document.querySelectorAll(".catbtn").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll(".catbtn").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+    document.getElementById("sec-"+b.dataset.cat)?.scrollIntoView({behavior:"smooth"});
+  });
+}
+function cardHTML(it){
+  const q=qtyOf(it.n);
+  const price=it.p===null?`<span class="pill pill-price">سعر اليوم</span>`:`<span class="pill pill-price">${it.p} ريال</span>`;
+  const cal=it.c?`<span class="pill pill-cal">${it.c} سعرة</span>`:"";
+  const hot=it.hot?`<span class="pill" style="background:#c0392b;color:#fff">الأكثر طلبًا ⭐</span>`:"";
+  let action;
+  if(it.sauce){action=q?`<div class="qty"><button data-dec="${it.n}">−</button><b>${q}</b><button data-add="${it.n}">+</button></div>`:`<button class="addbtn" data-add="${it.n}">أضف للسلة</button>`}
+  else if(q){action=`<div class="qty"><button data-dec="${it.n}">−</button><b>${q}</b><button data-add="${it.n}">+</button></div>`}
+  else{action=`<button class="addbtn" data-add="${it.n}">أضف للسلة</button>`}
+  return `<article class="card" data-name="${it.n}"><h3>${it.n}</h3>${it.d?`<p>${it.d}</p>`:`<p></p>`}<div class="meta">${price}${cal}${hot}</div><div class="addrow"><span style="color:var(--muted);font-size:12.5px">${it.sauce?"اختر الصوص عند الإضافة":""}</span>${action}</div></article>`;
+}
+function renderMenu(){
+  $("menu").innerHTML=MENU.map(s=>`<section id="sec-${s.id}"><div class="sec-title"><h2>${s.name}</h2><div class="rule"></div></div>${s.note?`<p class="sec-note">${s.note}</p>`:""}<div class="grid">${s.items.map(cardHTML).join("")}</div></section>`).join("");
+  bindAdds(); updateCartBar();
+}
+function bindAdds(){
+  document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>addItem(b.dataset.add));
+  document.querySelectorAll("[data-dec]").forEach(b=>b.onclick=()=>decItem(b.dataset.dec));
+}
+let pendingItem=null,pendingSauce=null;
+function addItem(n){
+  const it=ALL[n];
+  if(it.sauce){pendingItem=n;openSauce(it.sauce);return}
+  cart[keyOf(n)]=(cart[keyOf(n)]||0)+1;saveCart();renderMenu();toast("أُضيف: "+n);
+}
+function decItem(n){
+  const keys=Object.keys(cart).filter(k=>k===n||k.startsWith(n+"|"));
+  if(!keys.length)return;
+  const k=keys[keys.length-1];cart[k]--;if(cart[k]<=0)delete cart[k];
+  saveCart();renderMenu();
+}
+function openSauce(kind){
+  const list=kind==="bags"?SAUCES_BAGS:SAUCES_TAJIN;pendingSauce=list[0];
+  $("sauceTitle").textContent="اختر صوص: "+pendingItem;
+  $("sauceList").innerHTML=list.map((s,i)=>`<button data-sauce="${s}" class="${i===0?"sel":""}">${s}</button>`).join("");
+  document.querySelectorAll("[data-sauce]").forEach(b=>b.onclick=()=>{pendingSauce=b.dataset.sauce;document.querySelectorAll("[data-sauce]").forEach(x=>x.classList.toggle("sel",x===b))});
+  $("sauceOverlay").classList.add("open");
+}
+$("sauceConfirm").onclick=()=>{
+  const k=keyOf(pendingItem,pendingSauce);cart[k]=(cart[k]||0)+1;saveCart();
+  $("sauceOverlay").classList.remove("open");renderMenu();toast("أُضيف: "+pendingItem+" ("+pendingSauce+")");
+};
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$(b.dataset.close).classList.remove("open"));
+document.querySelectorAll(".overlay").forEach(o=>o.addEventListener("click",e=>{if(e.target===o)o.classList.remove("open")}));
+
+function cartTotals(){
+  let total=0,count=0,hasToday=false;
+  Object.entries(cart).forEach(([k,q])=>{const it=ALL[k.split("|")[0]];count+=q;if(it.p===null)hasToday=true;else total+=it.p*q});
+  return{total,count,hasToday};
+}
+function updateCartBar(){
+  const{total,count,hasToday}=cartTotals();
+  $("cartbar").style.display=count?"block":"none";
+  $("openCart").textContent=`عرض السلة (${count}) — ${total} ريال${hasToday?" + سعر اليوم":""}`;
+}
+function renderCart(){
+  const keys=Object.keys(cart);
+  if(!keys.length){$("cartItems").innerHTML=`<div class="empty">السلة فارغة — اختر أطباقك من المنيو 🦐</div>`;$("cartTotal").textContent="0 ريال";return}
+  $("cartItems").innerHTML=keys.map(k=>{
+    const[name,sauce]=k.split("|");const it=ALL[name];const q=cart[k];
+    const line=it.p===null?"سعر اليوم":money(it.p*q);
+    return `<div class="citem"><div><b>${name}</b> × ${q}${sauce?`<div class="sub">الصوص: ${sauce}</div>`:""}<div class="sub">${it.p===null?"يُؤكَّد السعر عند الطلب":it.p+" ريال للقطعة"}</div></div><div style="text-align:left"><b>${line}</b><div class="qty" style="margin-top:6px"><button data-cdec="${k}">−</button><button data-cadd="${k}">+</button></div></div></div>`;
+  }).join("");
+  document.querySelectorAll("[data-cadd]").forEach(b=>b.onclick=()=>{cart[b.dataset.cadd]++;saveCart();renderCart();renderMenu()});
+  document.querySelectorAll("[data-cdec]").forEach(b=>b.onclick=()=>{const k=b.dataset.cdec;cart[k]--;if(cart[k]<=0)delete cart[k];saveCart();renderCart();renderMenu()});
+  const{total,hasToday}=cartTotals();
+  $("cartTotal").textContent=total+" ريال"+(hasToday?" + سعر اليوم":"");
+}
+$("openCart").onclick=()=>{renderCart();$("cartOverlay").classList.add("open")};
+document.querySelectorAll('input[name="otype"]').forEach(r=>r.onchange=()=>{
+  const d=r.value==="توصيل";$("custAddr").style.display=d?"block":"none";
+  $("lblDelivery").classList.toggle("sel",d);$("lblPickup").classList.toggle("sel",!d);
+});
+$("sendOrder").onclick=()=>{
+  const keys=Object.keys(cart);
+  if(!keys.length){toast("السلة فارغة");return}
+  const name=$("custName").value.trim(),phone=$("custPhone").value.trim();
+  const type=document.querySelector('input[name="otype"]:checked').value;
+  const addr=$("custAddr").value.trim(),notes=$("custNotes").value.trim();
+  if(type==="توصيل"&&!addr){toast("من فضلك اكتب عنوان التوصيل");$("custAddr").focus();return}
+  const{total,hasToday}=cartTotals();
+  let msg="السلام عليكم، طلب جديد من تطبيق عمو شريمبو 🦐\n\n";
+  keys.forEach(k=>{const[n,sauce]=k.split("|");const it=ALL[n];msg+=`• ${n}${sauce?" ("+sauce+")":""} × ${cart[k]} — ${it.p===null?"سعر اليوم":(it.p*cart[k])+" ريال"}\n`});
+  msg+=`\nالإجمالي: ${total} ريال${hasToday?" + سعر اليوم (يُؤكَّد عند الطلب)":""}`;
+  if(type==="توصيل")msg+="\nرسوم التوصيل تُحسب عند التأكيد";
+  msg+=`\n\nنوع الطلب: ${type}`;
+  if(name)msg+=`\nالاسم: ${name}`;
+  if(phone)msg+=`\nالجوال: ${phone}`;
+  if(addr)msg+=`\nالعنوان: ${addr}`;
+  if(notes)msg+=`\nملاحظات: ${notes}`;
+  window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank");
+};
+$("search").addEventListener("input",e=>{
+  const q=e.target.value.trim();let any=false;
+  document.querySelectorAll(".card").forEach(c=>{
+    const show=!q||c.dataset.name.includes(q)||c.textContent.includes(q);
+    c.style.display=show?"flex":"none";if(show)any=true;
+  });
+  document.querySelectorAll("section[id^='sec-']").forEach(s=>{
+    const vis=[...s.querySelectorAll(".card")].some(c=>c.style.display!=="none");
+    s.style.display=vis?"block":"none";
+  });
+  $("noresult").style.display=any?"none":"block";
+});
+let deferredInstall=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("installBtn").style.display="inline-block"});
+$("installBtn").onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$("installBtn").style.display="none"}};
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+renderCats();renderMenu();
+</script>
+</body>
+</html>
