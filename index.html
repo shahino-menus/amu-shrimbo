@@ -138,7 +138,7 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
     <div>خميس مشيط، شارع 60، مقابل مستوصف الأسرة</div>
     <a class="phone" href="tel:+966594030858">0594 030 858</a>
     <div>الأسعار بالريال السعودي وتشمل ضريبة القيمة المضافة — رسوم التوصيل تُحسب عند تأكيد الطلب</div>
-    <div class="version">نسخة المنيو 4 — لوحة تحكم أونلاين</div>
+    <div class="version">نسخة المنيو 5 — لوحة تحكم أونلاين</div>
     <button class="adminlink" id="openAdmin">لوحة التحكم</button>
     <svg class="wave" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 12 Q 12 4 25 12 T 50 12 T 75 12 T 100 12" fill="none" stroke="#f5a800" stroke-width="1.6"/><path d="M0 17 Q 12 9 25 17 T 50 17 T 75 17 T 100 17" fill="none" stroke="#f5a800" stroke-width="1" opacity=".6"/></svg>
   </footer>
@@ -445,8 +445,8 @@ $("adminSave").onclick=()=>{
   if($("adminHot").checked)item.hot=1;
   const dup=MENU.some(sec=>sec.items.some((it,i)=>it.n===name&&!(adminEdit&&adminEdit.cid===sec.id&&adminEdit.idx===i)));
   if(dup){toast("يوجد صنف بنفس الاسم");return}
-  if(adminEdit){const old=MENU.find(x=>x.id===adminEdit.cid);old.items.splice(adminEdit.idx,1)}
-  s.items.push(item);clearAdminForm();saveMenu();toast("تم حفظ الصنف");
+  if(adminEdit&&adminEdit.cid===cid){s.items[adminEdit.idx]=item}
+  else{if(adminEdit){const old=MENU.find(x=>x.id===adminEdit.cid);old.items.splice(adminEdit.idx,1)}s.items.push(item)}clearAdminForm();saveMenu();toast("تم حفظ الصنف");
 };
 $("adminReset").onclick=()=>{if(!confirm("استرجاع المنيو الأصلي وحذف التعديلات؟"))return;localStorage.removeItem(MENU_KEY);MENU=loadMenu();clearAdminForm();saveMenu();toast("تم استرجاع المنيو الأصلي")};
 $("adminExport").onclick=()=>{

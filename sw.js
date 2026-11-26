@@ -1,4 +1,4 @@
-const CACHE = "amu-shrimbo-v4";
+const CACHE = "amu-shrimbo-v5";
 const ASSETS = ["./", "index.html", "manifest.json", "assets/logo.png?v=2", "assets/food.jpg", "assets/icon-192.png", "assets/icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
