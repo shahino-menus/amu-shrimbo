@@ -80,6 +80,21 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
 .empty{text-align:center;color:var(--muted);padding:22px 0;font-size:14.5px}
 .toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#fff;color:#123;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:700;z-index:70;display:none;box-shadow:0 8px 22px rgba(0,0,0,.4)}
 .noresult{text-align:center;color:var(--muted);padding:30px 0;display:none}
+.adminlink{margin-top:10px;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 16px;font-family:inherit;font-size:13px;cursor:pointer}
+.admin-note{color:var(--muted);font-size:13px;line-height:1.8;margin-bottom:12px}
+.admin-grid{display:grid;gap:10px}
+.admin-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:12px;padding:10px}
+.admin-row b{color:#fff}.admin-row small{display:block;color:var(--muted);margin-top:3px}
+.admin-actions{display:flex;gap:6px;flex-wrap:wrap}
+.admin-actions button{border:1px solid var(--line);background:transparent;color:var(--cream);border-radius:999px;padding:7px 12px;font-family:inherit;cursor:pointer;font-weight:700}
+.admin-actions .danger{border-color:#ff8a8a;color:#ffd7d7}
+.admin-form{display:grid;gap:9px;margin:12px 0}
+.admin-form input,.admin-form textarea,.admin-form select{width:100%;padding:11px 13px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:#123;font-size:14.5px;font-family:inherit}
+.admin-check{display:flex;gap:8px;align-items:center;color:var(--cream);font-size:14px}
+.admin-check input{width:auto}
+.admin-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.admin-tools button,.admin-tools label{border:1.5px solid var(--gold);background:transparent;color:var(--gold2);border-radius:999px;padding:9px 16px;font-family:inherit;font-weight:800;cursor:pointer;font-size:14px}
+.version{font-size:12px;color:var(--muted);opacity:.85}
 </style>
 </head>
 <body>
@@ -91,7 +106,7 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
     <div class="slogan">الطعم اللي يظبط المزاج 🦐</div>
     <div class="chips">
       <span class="chip">📍 خميس مشيط — شارع 60، مقابل مستوصف الأسرة</span>
-      <span class="chip">🛵 التوصيل عبر نينجا وهنجرستيشن</span>
+      <span class="chip">🛵 التوصيل عبر كيتا وهنجرستيشن</span>
       <span class="chip">📞 <span dir="ltr">0594 030 858</span></span>
     </div>
     <div class="cta">
@@ -123,6 +138,8 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
     <div>خميس مشيط، شارع 60، مقابل مستوصف الأسرة</div>
     <a class="phone" href="tel:+966594030858">0594 030 858</a>
     <div>الأسعار بالريال السعودي وتشمل ضريبة القيمة المضافة — رسوم التوصيل تُحسب عند تأكيد الطلب</div>
+    <div class="version">نسخة المنيو 3 — التوصيل عبر كيتا وهنجرستيشن</div>
+    <button class="adminlink" id="openAdmin">لوحة التحكم</button>
     <svg class="wave" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 12 Q 12 4 25 12 T 50 12 T 75 12 T 100 12" fill="none" stroke="#f5a800" stroke-width="1.6"/><path d="M0 17 Q 12 9 25 17 T 50 17 T 75 17 T 100 17" fill="none" stroke="#f5a800" stroke-width="1" opacity=".6"/></svg>
   </footer>
 </div>
@@ -162,13 +179,56 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
   </div>
 </div>
 
+<div class="overlay" id="adminOverlay">
+  <div class="sheet">
+    <h2>لوحة تحكم المنيو</h2>
+    <p class="admin-note">عدّل الأصناف والأسعار أو احذف صنفًا، واضغط حفظ. التعديلات تظهر فورًا على هذا الجهاز، ويمكن تصديرها كملف لإرسالها للنشر لكل العملاء.</p>
+    <div id="adminLogin">
+      <div class="admin-form">
+        <input id="adminPin" inputmode="numeric" type="password" placeholder="رمز الدخول">
+        <button class="btn btn-gold" id="adminLoginBtn">دخول</button>
+      </div>
+    </div>
+    <div id="adminPanel" style="display:none">
+      <div class="admin-form">
+        <select id="adminCat"></select>
+        <input id="adminName" placeholder="اسم الصنف">
+        <textarea id="adminDesc" rows="2" placeholder="الوصف (اختياري)"></textarea>
+        <input id="adminPrice" inputmode="decimal" placeholder="السعر بالريال">
+        <input id="adminCal" inputmode="numeric" placeholder="السعرات (اختياري)">
+        <select id="adminSauce">
+          <option value="">بدون صوص</option>
+          <option value="bags">صوص أكياس</option>
+          <option value="tajin">صوص طواجن</option>
+        </select>
+        <label class="admin-check"><input id="adminToday" type="checkbox"> سعر اليوم (بدون سعر ثابت)</label>
+        <label class="admin-check"><input id="adminHot" type="checkbox"> الأكثر طلبًا</label>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-gold" id="adminSave" style="flex:1">حفظ الصنف</button>
+          <button class="closebtn" id="adminNew">صنف جديد</button>
+        </div>
+      </div>
+      <div class="admin-grid" id="adminList"></div>
+      <div class="admin-tools">
+        <button id="adminExport">تصدير المنيو</button>
+        <label for="adminImport">استيراد منيو</label>
+        <input id="adminImport" type="file" accept="application/json" style="display:none">
+        <button id="adminReset">استرجاع الأصلي</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="closebtn" data-close="adminOverlay" style="flex:1">إغلاق</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 const WA="966594030858";
 const SAUCES_BAGS=["كيجن","فلفل ليمون","كريمة","زبدة وثوم"];
 const SAUCES_TAJIN=["حمر","طحينة","كريمة","طماطم"];
-const MENU=[
+const DEFAULT_MENU=[
  {id:"trays",name:"الصواني",note:"صواني بحرية مشكّلة تكفي وتزيد — كل صينية معها أرز وبطاطس.",items:[
   {n:"صينية عمو شريمبو",d:"سمكة قاروص، دنيس مقلي، 8 جمبري مشوي، 8 جمبري مقلي، 5 فيليه مقلي، بطاطس، فرشة أرز",p:130,c:4532,hot:1},
   {n:"صينية قاروص",d:"سمكة قاروص سنجاري، 8 جمبري، 3 فيليه مقلي، أرز، بطاطس",p:65,c:1950},
@@ -213,8 +273,20 @@ const MENU=[
  {id:"drinks",name:"المشروبات",items:[
   {n:"مشروب غازي",d:"",p:3,c:null},{n:"عصير",d:"",p:3,c:null},{n:"مياه",d:"",p:1,c:null}]}
 ];
-const ALL={}; MENU.forEach(s=>s.items.forEach(it=>ALL[it.n]=it));
+const MENU_KEY="amu_menu_v3";
+function loadMenu(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(MENU_KEY)||"null");
+    if(Array.isArray(saved)&&saved.length&&saved.every(s=>s&&s.id&&s.name&&Array.isArray(s.items)))return saved;
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_MENU));
+}
+let MENU=loadMenu();
+let ALL={};
+function rebuildAll(){ALL={};MENU.forEach(s=>s.items.forEach(it=>ALL[it.n]=it))}
+rebuildAll();
 let cart={}; try{cart=JSON.parse(localStorage.getItem("amu_cart")||"{}")}catch(e){}
+Object.keys(cart).forEach(k=>{if(!ALL[k.split("|")[0]])delete cart[k]});
 const $=id=>document.getElementById(id);
 const money=v=>v+" ريال";
 function keyOf(n,sauce){return sauce?n+"|"+sauce:n}
@@ -332,6 +404,56 @@ $("search").addEventListener("input",e=>{
     s.style.display=vis?"block":"none";
   });
   $("noresult").style.display=any?"none":"block";
+});
+const ADMIN_PIN="2468";
+let adminEdit=null;
+function saveMenu(){localStorage.setItem(MENU_KEY,JSON.stringify(MENU));rebuildAll();Object.keys(cart).forEach(k=>{if(!ALL[k.split("|")[0]])delete cart[k]});saveCart();renderCats();renderMenu();renderAdmin()}
+function adminCatOptions(){
+  $("adminCat").innerHTML=MENU.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
+}
+function clearAdminForm(){adminEdit=null;$("adminName").value="";$("adminDesc").value="";$("adminPrice").value="";$("adminCal").value="";$("adminSauce").value="";$("adminToday").checked=false;$("adminHot").checked=false}
+function renderAdmin(){
+  adminCatOptions();
+  $("adminList").innerHTML=MENU.map(s=>`<div><b style="color:var(--gold2)">${s.name}</b><div class="admin-grid" style="margin-top:8px">${s.items.map((it,i)=>`<div class="admin-row"><div><b>${it.n}</b><small>${it.p===null?"سعر اليوم":it.p+" ريال"}${it.c?" — "+it.c+" سعرة":""}</small></div><div class="admin-actions"><button data-aedit="${s.id}:${i}">تعديل</button><button class="danger" data-adel="${s.id}:${i}">حذف</button></div></div>`).join("")}</div></div>`).join("");
+  document.querySelectorAll("[data-aedit]").forEach(b=>b.onclick=()=>{
+    const[cid,idx]=b.dataset.aedit.split(":");const s=MENU.find(x=>x.id===cid);const it=s.items[+idx];adminEdit={cid,idx:+idx};
+    $("adminCat").value=cid;$("adminName").value=it.n;$("adminDesc").value=it.d||"";$("adminPrice").value=it.p===null?"":it.p;$("adminCal").value=it.c||"";$("adminSauce").value=it.sauce||"";$("adminToday").checked=it.p===null;$("adminHot").checked=!!it.hot;
+    $("adminName").focus();
+  });
+  document.querySelectorAll("[data-adel]").forEach(b=>b.onclick=()=>{
+    const[cid,idx]=b.dataset.adel.split(":");const s=MENU.find(x=>x.id===cid);const it=s.items[+idx];
+    if(!confirm("حذف صنف: "+it.n+"؟"))return;
+    s.items.splice(+idx,1);clearAdminForm();saveMenu();toast("تم حذف الصنف");
+  });
+}
+$("openAdmin").onclick=()=>{$("adminOverlay").classList.add("open")};
+$("adminLoginBtn").onclick=()=>{
+  if($("adminPin").value!==ADMIN_PIN){toast("رمز الدخول غير صحيح");return}
+  $("adminLogin").style.display="none";$("adminPanel").style.display="block";renderAdmin();
+};
+$("adminNew").onclick=clearAdminForm;
+$("adminSave").onclick=()=>{
+  const cid=$("adminCat").value;const s=MENU.find(x=>x.id===cid);if(!s)return;
+  const name=$("adminName").value.trim();if(!name){toast("اكتب اسم الصنف");$("adminName").focus();return}
+  const today=$("adminToday").checked;
+  const price=today?null:Number($("adminPrice").value);
+  if(!today&&(!price||price<=0)){toast("اكتب سعرًا صحيحًا أو اختر سعر اليوم");$("adminPrice").focus();return}
+  const item={n:name,d:$("adminDesc").value.trim(),p:price,c:$("adminCal").value?Number($("adminCal").value):null};
+  if($("adminSauce").value)item.sauce=$("adminSauce").value;
+  if($("adminHot").checked)item.hot=1;
+  const dup=MENU.some(sec=>sec.items.some((it,i)=>it.n===name&&!(adminEdit&&adminEdit.cid===sec.id&&adminEdit.idx===i)));
+  if(dup){toast("يوجد صنف بنفس الاسم");return}
+  if(adminEdit){const old=MENU.find(x=>x.id===adminEdit.cid);old.items.splice(adminEdit.idx,1)}
+  s.items.push(item);clearAdminForm();saveMenu();toast("تم حفظ الصنف");
+};
+$("adminReset").onclick=()=>{if(!confirm("استرجاع المنيو الأصلي وحذف التعديلات؟"))return;localStorage.removeItem(MENU_KEY);MENU=loadMenu();clearAdminForm();saveMenu();toast("تم استرجاع المنيو الأصلي")};
+$("adminExport").onclick=()=>{
+  const blob=new Blob([JSON.stringify(MENU,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="amu-shrimbo-menu.json";a.click();URL.revokeObjectURL(a.href);
+};
+$("adminImport").addEventListener("change",e=>{
+  const f=e.target.files[0];if(!f)return;
+  f.text().then(t=>{const data=JSON.parse(t);if(!Array.isArray(data)||!data.length)throw new Error("bad");MENU=data;clearAdminForm();saveMenu();toast("تم استيراد المنيو")}).catch(()=>toast("ملف المنيو غير صالح"));
 });
 let deferredInstall=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("installBtn").style.display="inline-block"});
