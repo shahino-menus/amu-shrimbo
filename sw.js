@@ -1,4 +1,4 @@
-const CACHE = "amu-shrimbo-v3";
+const CACHE = "amu-shrimbo-v4";
 const ASSETS = ["./", "index.html", "manifest.json", "assets/logo.png?v=2", "assets/food.jpg", "assets/icon-192.png", "assets/icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
@@ -8,6 +8,7 @@ self.addEventListener("activate", e => {
 });
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
+  if (new URL(e.request.url).origin !== self.location.origin) return;
   e.respondWith(
     caches.match(e.request).then(hit => hit || fetch(e.request).then(res => {
       const copy = res.clone();

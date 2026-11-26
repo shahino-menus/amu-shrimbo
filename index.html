@@ -138,7 +138,7 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
     <div>خميس مشيط، شارع 60، مقابل مستوصف الأسرة</div>
     <a class="phone" href="tel:+966594030858">0594 030 858</a>
     <div>الأسعار بالريال السعودي وتشمل ضريبة القيمة المضافة — رسوم التوصيل تُحسب عند تأكيد الطلب</div>
-    <div class="version">نسخة المنيو 3 — التوصيل عبر كيتا وهنجرستيشن</div>
+    <div class="version">نسخة المنيو 4 — لوحة تحكم أونلاين</div>
     <button class="adminlink" id="openAdmin">لوحة التحكم</button>
     <svg class="wave" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 12 Q 12 4 25 12 T 50 12 T 75 12 T 100 12" fill="none" stroke="#f5a800" stroke-width="1.6"/><path d="M0 17 Q 12 9 25 17 T 50 17 T 75 17 T 100 17" fill="none" stroke="#f5a800" stroke-width="1" opacity=".6"/></svg>
   </footer>
@@ -182,11 +182,11 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
 <div class="overlay" id="adminOverlay">
   <div class="sheet">
     <h2>لوحة تحكم المنيو</h2>
-    <p class="admin-note">عدّل الأصناف والأسعار أو احذف صنفًا، واضغط حفظ. التعديلات تظهر فورًا على هذا الجهاز، ويمكن تصديرها كملف لإرسالها للنشر لكل العملاء.</p>
+    <p class="admin-note">عدّل الأصناف والأسعار أو احذف صنفًا، واضغط حفظ. التعديلات تُحفظ أونلاين وتظهر لكل العملاء بعد تسجيل الدخول بحساب Google المصرح له بالإدارة.</p>
     <div id="adminLogin">
       <div class="admin-form">
-        <input id="adminPin" inputmode="numeric" type="password" placeholder="رمز الدخول">
-        <button class="btn btn-gold" id="adminLoginBtn">دخول</button>
+        <div id="adminStatus" class="admin-note">سجل الدخول بحساب Google المصرح له بالإدارة.</div>
+        <button class="btn btn-gold" id="adminLoginBtn">تسجيل الدخول بـ Google</button>
       </div>
     </div>
     <div id="adminPanel" style="display:none">
@@ -214,6 +214,7 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
         <label for="adminImport">استيراد منيو</label>
         <input id="adminImport" type="file" accept="application/json" style="display:none">
         <button id="adminReset">استرجاع الأصلي</button>
+        <button id="adminLogout">تسجيل الخروج</button>
       </div>
     </div>
     <div style="display:flex;gap:10px;margin-top:14px">
@@ -273,11 +274,12 @@ const DEFAULT_MENU=[
  {id:"drinks",name:"المشروبات",items:[
   {n:"مشروب غازي",d:"",p:3,c:null},{n:"عصير",d:"",p:3,c:null},{n:"مياه",d:"",p:1,c:null}]}
 ];
-const MENU_KEY="amu_menu_v3";
+const MENU_KEY="amu_menu_v4";
+function validMenu(m){return Array.isArray(m)&&m.length&&m.every(s=>s&&s.id&&s.name&&Array.isArray(s.items)&&s.items.every(it=>it&&typeof it.n==="string"))}
 function loadMenu(){
   try{
     const saved=JSON.parse(localStorage.getItem(MENU_KEY)||"null");
-    if(Array.isArray(saved)&&saved.length&&saved.every(s=>s&&s.id&&s.name&&Array.isArray(s.items)))return saved;
+    if(validMenu(saved))return saved;
   }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULT_MENU));
 }
@@ -286,7 +288,10 @@ let ALL={};
 function rebuildAll(){ALL={};MENU.forEach(s=>s.items.forEach(it=>ALL[it.n]=it))}
 rebuildAll();
 let cart={}; try{cart=JSON.parse(localStorage.getItem("amu_cart")||"{}")}catch(e){}
-Object.keys(cart).forEach(k=>{if(!ALL[k.split("|")[0]])delete cart[k]});
+function pruneCart(){Object.keys(cart).forEach(k=>{if(!ALL[k.split("|")[0]])delete cart[k]})}
+pruneCart();
+window.amuGetMenu=()=>MENU;
+window.amuSetMenu=(m)=>{if(!validMenu(m))return false;MENU=m;localStorage.setItem(MENU_KEY,JSON.stringify(MENU));rebuildAll();pruneCart();saveCart();renderCats();renderMenu();if(document.getElementById("adminPanel").style.display==="block")renderAdmin();return true};
 const $=id=>document.getElementById(id);
 const money=v=>v+" ريال";
 function keyOf(n,sauce){return sauce?n+"|"+sauce:n}
@@ -405,9 +410,8 @@ $("search").addEventListener("input",e=>{
   });
   $("noresult").style.display=any?"none":"block";
 });
-const ADMIN_PIN="2468";
 let adminEdit=null;
-function saveMenu(){localStorage.setItem(MENU_KEY,JSON.stringify(MENU));rebuildAll();Object.keys(cart).forEach(k=>{if(!ALL[k.split("|")[0]])delete cart[k]});saveCart();renderCats();renderMenu();renderAdmin()}
+function saveMenu(){localStorage.setItem(MENU_KEY,JSON.stringify(MENU));rebuildAll();pruneCart();saveCart();renderCats();renderMenu();renderAdmin();if(window.amuSaveOnline){window.amuSaveOnline().catch(()=>toast("اتحفظ على الجهاز، لكن الحفظ أونلاين فشل"))}}
 function adminCatOptions(){
   $("adminCat").innerHTML=MENU.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
 }
@@ -427,10 +431,8 @@ function renderAdmin(){
   });
 }
 $("openAdmin").onclick=()=>{$("adminOverlay").classList.add("open")};
-$("adminLoginBtn").onclick=()=>{
-  if($("adminPin").value!==ADMIN_PIN){toast("رمز الدخول غير صحيح");return}
-  $("adminLogin").style.display="none";$("adminPanel").style.display="block";renderAdmin();
-};
+$("adminLoginBtn").onclick=()=>{if(window.amuAdminLogin)window.amuAdminLogin();else toast("جاري تجهيز تسجيل الدخول")};
+$("adminLogout").onclick=()=>{if(window.amuAdminLogout)window.amuAdminLogout()};
 $("adminNew").onclick=clearAdminForm;
 $("adminSave").onclick=()=>{
   const cid=$("adminCat").value;const s=MENU.find(x=>x.id===cid);if(!s)return;
@@ -453,13 +455,51 @@ $("adminExport").onclick=()=>{
 };
 $("adminImport").addEventListener("change",e=>{
   const f=e.target.files[0];if(!f)return;
-  f.text().then(t=>{const data=JSON.parse(t);if(!Array.isArray(data)||!data.length)throw new Error("bad");MENU=data;clearAdminForm();saveMenu();toast("تم استيراد المنيو")}).catch(()=>toast("ملف المنيو غير صالح"));
+  f.text().then(t=>{const data=JSON.parse(t);if(!validMenu(data))throw new Error("bad");MENU=data;clearAdminForm();saveMenu();toast("تم استيراد المنيو")}).catch(()=>toast("ملف المنيو غير صالح"));
 });
 let deferredInstall=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("installBtn").style.display="inline-block"});
 $("installBtn").onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$("installBtn").style.display="none"}};
 if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
 renderCats();renderMenu();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyAVAislyGdJLn1jeRHjZ6UZAoQdIj0-VfU",authDomain:"amu-shrimbo.firebaseapp.com",projectId:"amu-shrimbo",storageBucket:"amu-shrimbo.firebasestorage.app",messagingSenderId:"751293590743",appId:"1:751293590743:web:f8e528885fbb3108451492"};
+const ADMIN_EMAIL="abdullah.shahino23@gmail.com";
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const menuRef=doc(db,"menus","amu-shrimbo");
+async function loadOnlineMenu(){
+  try{
+    const snap=await getDoc(menuRef);
+    if(snap.exists()&&window.amuSetMenu)window.amuSetMenu(snap.data().menu);
+  }catch(e){console.warn("menu load failed",e)}
+}
+window.amuSaveOnline=async()=>{
+  const user=auth.currentUser;
+  if(!user||user.email!==ADMIN_EMAIL)throw new Error("not-admin");
+  await setDoc(menuRef,{menu:window.amuGetMenu(),updatedAt:serverTimestamp(),updatedBy:user.email},{merge:true});
+  if(window.toast)window.toast("تم الحفظ أونلاين");
+};
+window.amuAdminLogin=async()=>{
+  try{await signInWithPopup(auth,new GoogleAuthProvider())}
+  catch(e){console.warn(e);if(window.toast)window.toast("تعذر تسجيل الدخول")}
+};
+window.amuAdminLogout=async()=>{await signOut(auth)};
+onAuthStateChanged(auth,user=>{
+  const login=document.getElementById("adminLogin"),panel=document.getElementById("adminPanel"),status=document.getElementById("adminStatus");
+  if(user&&user.email===ADMIN_EMAIL){
+    login.style.display="none";panel.style.display="block";if(window.renderAdmin)window.renderAdmin();
+  }else{
+    login.style.display="block";panel.style.display="none";
+    status.textContent=user?"هذا الحساب غير مصرح له بالإدارة.":"سجل الدخول بحساب Google المصرح له بالإدارة.";
+  }
+});
+loadOnlineMenu();
 </script>
 </body>
 </html>
