@@ -7,59 +7,67 @@
 <meta name="description" content="منيو مطعم عمو شريمبو للمأكولات البحرية في خميس مشيط — صواني، أكياس سي فود، طواجن، باستا وشوربات. اطلب عبر واتساب 0594030858">
 <meta name="theme-color" content="#0a4d8c">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="assets/icon-192.png?v=2">
-<link rel="apple-touch-icon" href="assets/icon-180.png?v=2">
+<link rel="icon" href="assets/icon-192.png?v=8">
+<link rel="apple-touch-icon" href="assets/icon-180.png?v=8">
 <style>
 :root{--navy:#0a4d8c;--navy2:#0d6fb8;--navy3:#06325e;--gold:#f5a800;--gold2:#ffc21c;--orange:#f26722;--red:#e30613;--cream:#fff6e3;--muted:#cfe8f7;--card:rgba(255,255,255,.08);--line:rgba(245,168,0,.5)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:linear-gradient(180deg,var(--navy2),var(--navy) 30%,var(--navy3));color:var(--cream);min-height:100vh}
+body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:linear-gradient(180deg,var(--navy2),var(--navy) 30%,var(--navy3));color:var(--cream);min-height:100vh;padding-bottom:74px}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:980px;margin:0 auto;padding:0 14px 110px}
-.hero{text-align:center;padding:26px 10px 8px}
-.logo{width:265px;height:auto;object-fit:contain;filter:drop-shadow(0 12px 24px rgba(0,0,0,.45))}
-.hero h1{font-size:34px;color:var(--gold2);margin-top:12px;letter-spacing:.5px}
-.hero .en{font-size:15px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
-.slogan{font-size:19px;color:var(--cream);margin:8px 0 14px;font-weight:600}
-.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
-.chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--cream);background:rgba(0,0,0,.18)}
-.cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
-.btn{border:none;cursor:pointer;border-radius:999px;padding:12px 22px;font-size:15px;font-weight:700;font-family:inherit}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px 90px}
+.hero{display:grid;grid-template-columns:112px 1fr;gap:14px;align-items:center;text-align:right;padding:16px 4px 6px}
+.logo{width:112px;height:auto;object-fit:contain;filter:drop-shadow(0 10px 20px rgba(0,0,0,.45))}
+.hero h1{font-size:28px;color:var(--gold2);margin-top:2px;letter-spacing:.5px}
+.hero .en{font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.slogan{font-size:15px;color:var(--cream);margin:5px 0 8px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-start;margin-bottom:10px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:12px;color:var(--cream);background:rgba(0,0,0,.18)}
+.cta{display:flex;gap:9px;justify-content:flex-start;flex-wrap:wrap;margin-bottom:10px}
+.btn{border:none;cursor:pointer;border-radius:999px;padding:10px 18px;font-size:14px;font-weight:700;font-family:inherit}
 .btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#3a2703}
 .btn-ghost{background:transparent;border:1.5px solid var(--gold);color:var(--gold2)}
-.food{width:100%;max-height:300px;object-fit:cover;border-radius:18px;border:2px solid var(--line);display:block}
-.searchbar{position:sticky;top:0;z-index:30;background:rgba(6,50,94,.96);padding:10px 0 8px;margin-top:14px}
+.food{grid-column:1/-1;width:100%;height:118px;object-fit:cover;border-radius:16px;border:2px solid var(--line);display:block}
+.searchbar{position:sticky;top:0;z-index:30;background:rgba(6,50,94,.96);padding:10px 0 8px;margin-top:10px}
 .searchbar input{width:100%;padding:12px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:#123;font-size:15px;font-family:inherit;outline:none}
 .cats{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 4px;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
 .catbtn{flex:0 0 auto;border:1.5px solid var(--line);background:rgba(0,0,0,.2);color:var(--cream);border-radius:999px;padding:8px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 .catbtn.active{background:var(--gold);color:#3a2703;border-color:var(--gold)}
-section{margin-top:26px;scroll-margin-top:130px}
+section{margin-top:20px;scroll-margin-top:130px}
 .sec-title{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.sec-title h2{font-size:22px;color:var(--gold2)}
+.sec-title h2{font-size:21px;color:var(--gold2)}
 .sec-title .rule{flex:1;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
-.sec-note{color:var(--muted);font-size:13.5px;margin-bottom:12px}
-.grid{display:grid;grid-template-columns:1fr;gap:12px}
+.sec-note{color:var(--muted);font-size:13px;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr;gap:9px}
 @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
-.card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
-.card h3{font-size:17px;color:#fff}
-.card p{font-size:13.5px;color:var(--muted);line-height:1.7;flex:1}
-.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.pill{border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:12px;display:flex;align-items:center;gap:12px}
+.card-text{flex:1;min-width:0}
+.card h3{font-size:16px;color:#fff}
+.card p{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:3px}
+.card-actions{display:flex;flex-direction:column;align-items:stretch;gap:7px;min-width:112px}
+.meta{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.pill{border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700}
 .pill-price{background:var(--orange);color:#fff}
 .pill-cal{border:1px solid var(--line);color:var(--muted)}
 .addrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.addbtn{background:linear-gradient(180deg,#ff8a3d,var(--orange));color:#fff;border:none;border-radius:999px;padding:9px 20px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
-.qty{display:flex;align-items:center;gap:10px}
-.qty button{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--gold);background:transparent;color:var(--gold2);font-size:18px;cursor:pointer}
+.addbtn{background:linear-gradient(180deg,#ff8a3d,var(--orange));color:#fff;border:none;border-radius:999px;padding:9px 16px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.qty{display:flex;align-items:center;gap:8px;justify-content:center}
+.qty button{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--gold);background:transparent;color:var(--gold2);font-size:18px;cursor:pointer}
 .qty b{min-width:18px;text-align:center}
+.price-line{font-weight:900;color:#fff;font-size:16px;text-align:center}
+.sauce-note{color:var(--muted);font-size:11.5px;text-align:center}
 .allergens{display:flex;flex-wrap:wrap;gap:8px}
 .allergens span{border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--muted)}
 footer{margin-top:40px;text-align:center;color:var(--muted);font-size:13.5px;line-height:2}
 footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;display:inline-block}
 .wave{display:block;width:100%;height:34px;margin-top:18px}
-.cartbar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:min(94vw,560px);z-index:50}
+.cartbar{position:fixed;bottom:78px;left:50%;transform:translateX(-50%);width:min(94vw,560px);z-index:50}
 .cartbar button{width:100%;padding:15px;border:none;border-radius:16px;background:linear-gradient(180deg,#ff8a3d,var(--orange));color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 10px 26px rgba(0,0,0,.5)}
+.bottom-actions{position:fixed;bottom:0;inset-inline:0;z-index:55;background:rgba(6,50,94,.97);border-top:1px solid var(--line);padding:9px 12px calc(9px + env(safe-area-inset-bottom));display:flex;gap:9px;justify-content:center}
+.bottom-actions a{flex:1;max-width:270px;text-align:center;border-radius:999px;padding:12px 10px;font-weight:900;font-size:15px}
+.bottom-wa{background:#0a7a3d;color:#fff}
+.bottom-call{background:transparent;color:var(--gold2);border:1.5px solid var(--gold)}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:60;display:none;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
 .sheet{background:#0a4d8c;width:min(96vw,620px);max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;border:1.5px solid var(--line);border-bottom:none;padding:18px}
@@ -100,7 +108,8 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
 <body>
 <div class="wrap">
   <header class="hero">
-    <img class="logo" src="assets/logo.png?v=2" alt="لوجو عمو شريمبو">
+    <img class="logo" src="assets/logo.png?v=8" alt="لوجو عمو شريمبو">
+    <div class="hero-text">
     <h1>عمو شريمبو</h1>
     <div class="en">Amu Shrimbo</div>
     <div class="slogan">الطعم اللي يظبط المزاج 🦐</div>
@@ -113,6 +122,7 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
       <a class="btn btn-gold" href="https://wa.me/966594030858?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B7%D9%84%D8%A8%20%D9%85%D9%86%20%D8%B9%D9%85%D9%88%20%D8%B4%D8%B1%D9%8A%D9%85%D8%A8%D9%88" target="_blank" rel="noopener">اطلب واتساب</a>
       <a class="btn btn-ghost" href="tel:+966594030858">اتصال بالمطعم</a>
       <button class="btn btn-ghost" id="installBtn" style="display:none">تثبيت التطبيق</button>
+    </div>
     </div>
     <img class="food" src="assets/food.jpg" alt="أطباق عمو شريمبو البحرية">
   </header>
@@ -138,13 +148,14 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
     <div>خميس مشيط، شارع 60، مقابل مستوصف الأسرة</div>
     <a class="phone" href="tel:+966594030858">0594 030 858</a>
     <div>الأسعار بالريال السعودي وتشمل ضريبة القيمة المضافة — رسوم التوصيل تُحسب عند تأكيد الطلب</div>
-    <div class="version">نسخة المنيو 6 — لوحة تحكم برمز</div>
+    <div class="version">نسخة المنيو 8 — منيو سريع</div>
     <button class="adminlink" id="openAdmin">لوحة التحكم</button>
     <svg class="wave" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 12 Q 12 4 25 12 T 50 12 T 75 12 T 100 12" fill="none" stroke="#f5a800" stroke-width="1.6"/><path d="M0 17 Q 12 9 25 17 T 50 17 T 75 17 T 100 17" fill="none" stroke="#f5a800" stroke-width="1" opacity=".6"/></svg>
   </footer>
 </div>
 
 <div class="cartbar" id="cartbar" style="display:none"><button id="openCart"></button></div>
+<div class="bottom-actions"><a class="bottom-wa" href="https://wa.me/966594030858?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%B7%D9%84%D8%A8%20%D9%85%D9%86%20%D8%B9%D9%85%D9%88%20%D8%B4%D8%B1%D9%8A%D9%85%D8%A8%D9%88" target="_blank" rel="noopener">طلب عبر واتساب</a><a class="bottom-call" href="tel:+966594030858">مكالمة هاتفية</a></div>
 
 <div class="overlay" id="sauceOverlay">
   <div class="sheet">
@@ -307,14 +318,14 @@ function renderCats(){
 }
 function cardHTML(it){
   const q=qtyOf(it.n);
-  const price=it.p===null?`<span class="pill pill-price">سعر اليوم</span>`:`<span class="pill pill-price">${it.p} ريال</span>`;
+  const price=it.p===null?`<div class="price-line">سعر اليوم</div>`:`<div class="price-line">${it.p} ريال</div>`;
   const cal=it.c?`<span class="pill pill-cal">${it.c} سعرة</span>`:"";
   const hot=it.hot?`<span class="pill" style="background:#c0392b;color:#fff">الأكثر طلبًا ⭐</span>`:"";
   let action;
-  if(it.sauce){action=q?`<div class="qty"><button data-dec="${it.n}">−</button><b>${q}</b><button data-add="${it.n}">+</button></div>`:`<button class="addbtn" data-add="${it.n}">أضف للسلة</button>`}
-  else if(q){action=`<div class="qty"><button data-dec="${it.n}">−</button><b>${q}</b><button data-add="${it.n}">+</button></div>`}
-  else{action=`<button class="addbtn" data-add="${it.n}">أضف للسلة</button>`}
-  return `<article class="card" data-name="${it.n}"><h3>${it.n}</h3>${it.d?`<p>${it.d}</p>`:`<p></p>`}<div class="meta">${price}${cal}${hot}</div><div class="addrow"><span style="color:var(--muted);font-size:12.5px">${it.sauce?"اختر الصوص عند الإضافة":""}</span>${action}</div></article>`;
+  if(q){action=`<div class="qty"><button data-dec="${it.n}">−</button><b>${q}</b><button data-add="${it.n}">+</button></div>`}
+  else if(it.sauce){action=`<button class="addbtn" data-add="${it.n}">خيارات</button>`}
+  else{action=`<button class="addbtn" data-add="${it.n}">+ إضافة</button>`}
+  return `<article class="card" data-name="${it.n}"><div class="card-text"><h3>${it.n}</h3>${it.d?`<p>${it.d}</p>`:""}<div class="meta">${cal}${hot}</div></div><div class="card-actions">${price}${action}${it.sauce?`<div class="sauce-note">اختر الصوص</div>`:""}</div></article>`;
 }
 function renderMenu(){
   $("menu").innerHTML=MENU.map(s=>`<section id="sec-${s.id}"><div class="sec-title"><h2>${s.name}</h2><div class="rule"></div></div>${s.note?`<p class="sec-note">${s.note}</p>`:""}<div class="grid">${s.items.map(cardHTML).join("")}</div></section>`).join("");
