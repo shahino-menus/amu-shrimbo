@@ -81,6 +81,8 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
 .totals{display:flex;justify-content:space-between;font-size:16px;font-weight:800;color:var(--gold2);padding:12px 0}
 .form{display:grid;gap:10px;margin-top:6px}
 .form input,.form textarea,.form select{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:#123;font-size:14.5px;font-family:inherit}
+.flabel{display:block;font-size:13px;font-weight:800;color:var(--gold2)}
+.delivery-note{background:rgba(245,168,0,.16);border:1px solid var(--line);color:var(--gold2);border-radius:12px;padding:10px 12px;font-size:13.5px;font-weight:800;line-height:1.7}
 .radio{display:flex;gap:8px}
 .radio label{flex:1;text-align:center;border:1.5px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;font-size:14px}
 .radio input{display:none}
@@ -151,7 +153,7 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
     <div>عمو شريمبو — الطعم اللي يظبط المزاج</div>
     <div>خميس مشيط، شارع 60، مقابل مستوصف الأسرة</div>
     <a class="phone" href="tel:+966594030858">0594 030 858</a>
-    <div>الأسعار بالريال السعودي وتشمل ضريبة القيمة المضافة — رسوم التوصيل تُحسب عند تأكيد الطلب</div>
+    <div>الأسعار بالريال السعودي وتشمل ضريبة القيمة المضافة — رسوم التوصيل تُحسب حسب الموقع عند تأكيد الطلب</div>
     <div class="version">نسخة المنيو 9 — صور المنتجات</div>
     <button class="adminlink" id="openAdmin">لوحة التحكم</button>
     <svg class="wave" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 12 Q 12 4 25 12 T 50 12 T 75 12 T 100 12" fill="none" stroke="#f5a800" stroke-width="1.6"/><path d="M0 17 Q 12 9 25 17 T 50 17 T 75 17 T 100 17" fill="none" stroke="#f5a800" stroke-width="1" opacity=".6"/></svg>
@@ -181,10 +183,14 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
       <input id="custName" placeholder="الاسم">
       <input id="custPhone" inputmode="tel" placeholder="رقم الجوال">
       <div class="radio">
-        <label id="lblPickup" class="sel"><input type="radio" name="otype" value="استلام من المطعم" checked>استلام من المطعم</label>
-        <label id="lblDelivery"><input type="radio" name="otype" value="توصيل">توصيل</label>
+        <label id="lblDelivery" class="sel"><input type="radio" name="otype" value="توصيل" checked>🛵 توصيل للموقع</label>
+        <label id="lblPickup"><input type="radio" name="otype" value="استلام من المطعم">🏪 استلام من الفرع</label>
       </div>
-      <input id="custAddr" placeholder="العنوان (للتوصيل)" style="display:none">
+      <div id="addressField">
+        <label class="flabel" for="custAddr">📍 موقع العميل / تفاصيل العنوان بالتفصيل أو رابط الموقع</label>
+        <textarea id="custAddr" rows="2" placeholder="اكتب الحي، الشارع، رقم المبنى، أو الصق رابط موقعك من خرائط جوجل هنا..."></textarea>
+      </div>
+      <div class="delivery-note" id="deliveryFeeNote">🛵 في حالة التوصيل تُضاف رسوم التوصيل حسب الموقع وتُحسب عند تأكيد الطلب</div>
       <textarea id="custNotes" rows="2" placeholder="ملاحظات على الطلب (اختياري)"></textarea>
     </div>
     <div style="display:flex;gap:10px;margin-top:14px">
@@ -447,7 +453,7 @@ function renderCart(){
 }
 $("openCart").onclick=()=>{renderCart();$("cartOverlay").classList.add("open")};
 document.querySelectorAll('input[name="otype"]').forEach(r=>r.onchange=()=>{
-  const d=r.value==="توصيل";$("custAddr").style.display=d?"block":"none";
+  const d=r.value==="توصيل";$("addressField").style.display=d?"block":"none";$("deliveryFeeNote").style.display=d?"block":"none";
   $("lblDelivery").classList.toggle("sel",d);$("lblPickup").classList.toggle("sel",!d);
 });
 $("sendOrder").onclick=()=>{
@@ -456,16 +462,16 @@ $("sendOrder").onclick=()=>{
   const name=$("custName").value.trim(),phone=$("custPhone").value.trim();
   const type=document.querySelector('input[name="otype"]:checked').value;
   const addr=$("custAddr").value.trim(),notes=$("custNotes").value.trim();
-  if(type==="توصيل"&&!addr){toast("من فضلك اكتب عنوان التوصيل");$("custAddr").focus();return}
+  if(type==="توصيل"&&!addr){toast("يرجى كتابة أو إرسال موقعك بالتفصيل لتوصيل الطلب.");$("custAddr").focus();return}
   const{total,hasToday}=cartTotals();
   let msg="السلام عليكم، طلب جديد من تطبيق عمو شريمبو 🦐\n\n";
   keys.forEach(k=>{const[n,sauce]=k.split("|");const it=ALL[n];msg+=`• ${n}${sauce?" ("+sauce+")":""} × ${cart[k]} — ${it.p===null?"سعر اليوم":(it.p*cart[k])+" ريال"}\n`});
   msg+=`\nالإجمالي: ${total} ريال${hasToday?" + سعر اليوم (يُؤكَّد عند الطلب)":""}`;
-  if(type==="توصيل")msg+="\nرسوم التوصيل تُحسب عند التأكيد";
+  if(type==="توصيل")msg+="\n🛵 رسوم التوصيل: تُضاف حسب الموقع وتُحسب عند تأكيد الطلب";
   msg+=`\n\nنوع الطلب: ${type}`;
   if(name)msg+=`\nالاسم: ${name}`;
   if(phone)msg+=`\nالجوال: ${phone}`;
-  if(addr)msg+=`\nالعنوان: ${addr}`;
+  if(type==="توصيل")msg+=`\n📍 موقع العميل / العنوان: ${addr}`;
   if(notes)msg+=`\nملاحظات: ${notes}`;
   window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank");
 };
