@@ -197,7 +197,7 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
 <div class="overlay" id="adminOverlay">
   <div class="sheet">
     <h2>لوحة تحكم المنيو</h2>
-    <p class="admin-note">عدّل الأصناف والأسعار أو احذف صنفًا، واضغط حفظ. التعديلات تظهر فورًا على هذا الجهاز، ويمكن تصديرها كملف لإرسالها للنشر لكل العملاء.</p>
+    <p class="admin-note">عدّل الأصناف والأسعار والصور واضغط حفظ. بعد تسجيل دخول المدير تُنشر التعديلات أونلاين وتظهر لكل العملاء فورًا.</p>
     <div id="adminLogin">
       <div class="admin-form">
         <input id="adminPin" inputmode="numeric" type="password" placeholder="رمز الدخول">
@@ -205,6 +205,11 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
       </div>
     </div>
     <div id="adminPanel" style="display:none">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+        <span id="adminAuthState" style="font-size:14px;font-weight:700">حالة النشر: غير مسجل</span>
+        <button type="button" class="btn btn-gold" id="adminSignIn">تسجيل دخول المدير</button>
+        <button type="button" class="closebtn" id="adminPublish">نشر التعديلات أونلاين</button>
+      </div>
       <div class="admin-form">
         <select id="adminCat"></select>
         <input id="adminName" placeholder="اسم الصنف">
@@ -246,6 +251,9 @@ footer .phone{font-size:20px;color:var(--gold2);font-weight:800;direction:ltr;di
 
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
 const WA="966594030858";
 const SAUCES_BAGS=["كيجن","فلفل ليمون","كريمة","زبدة وثوم"];
@@ -306,6 +314,47 @@ function loadMenu(){
   return JSON.parse(JSON.stringify(DEFAULT_MENU));
 }
 let MENU=loadMenu();
+const FIREBASE_CONFIG={apiKey:"AIzaSyAVAislyGdJLn1jeRHjZ6UZAoQdIj0-VfU",authDomain:"amu-shrimbo.firebaseapp.com",projectId:"amu-shrimbo",storageBucket:"amu-shrimbo.firebasestorage.app",messagingSenderId:"751293590743",appId:"1:751293590743:web:f8e528885fbb3108451492"};
+const ADMIN_EMAIL="abdullah.shahino23@gmail.com";
+let db=null,auth=null,adminUser=null;
+try{if(window.firebase){firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();auth=firebase.auth()}}catch(e){}
+function isAdmin(){return !!(adminUser&&adminUser.email===ADMIN_EMAIL)}
+function menuForOnline(){return MENU.map(s=>({id:s.id,name:s.name,note:s.note||"",items:s.items.map(it=>{const c={...it};delete c.img;return c})}))}
+async function publishOnline(silent){
+  if(!db||!isAdmin())return false;
+  try{
+    await db.collection("menus").doc("amu-shrimbo").set({json:JSON.stringify(menuForOnline()),updatedAt:Date.now()});
+    const batch=db.batch();
+    MENU.forEach(s=>s.items.forEach(it=>{const ref=db.collection("menuImages").doc(encodeURIComponent(it.n));if(it.img)batch.set(ref,{name:it.n,img:it.img,updatedAt:Date.now()});else batch.delete(ref)}));
+    await batch.commit();
+    try{localStorage.removeItem("amu_pending_publish")}catch(e){}
+    if(!silent)toast("تم النشر أونلاين — ظاهر للعملاء الآن");
+    return true;
+  }catch(e){if(!silent)toast("تعذر النشر أونلاين — جرّب تاني");return false}
+}
+async function loadOnline(){
+  if(!db)return;
+  try{
+    const snap=await db.collection("menus").doc("amu-shrimbo").get();
+    if(!snap.exists)return;
+    const data=JSON.parse(snap.data().json||"null");
+    if(!validMenu(data))return;
+    const imgs=await db.collection("menuImages").get();
+    const map={};imgs.forEach(d=>{const v=d.data();if(v&&v.name&&v.img)map[v.name]=v.img});
+    data.forEach(s=>s.items.forEach(it=>{if(map[it.n])it.img=map[it.n]}));
+    data.sort((a,b)=>{const ia=MENU_ORDER.indexOf(a.id),ib=MENU_ORDER.indexOf(b.id);return (ia<0?99:ia)-(ib<0?99:ib)});
+    MENU=data;try{localStorage.setItem(MENU_KEY,JSON.stringify(MENU))}catch(e){}
+    rebuildAll();pruneCart();renderCats();renderMenu();
+    if(document.getElementById("adminPanel").style.display==="block")renderAdmin();
+  }catch(e){}
+}
+function updateAdminAuthUI(){
+  const el=document.getElementById("adminAuthState");if(!el)return;
+  el.textContent=isAdmin()?"حالة النشر: مسجل دخول المدير — الحفظ ينشر أونلاين":"حالة النشر: غير مسجل — الحفظ على جهازك فقط";
+  const b=document.getElementById("adminSignIn");if(b)b.style.display=isAdmin()?"none":"inline-block";
+}
+if(auth){auth.onAuthStateChanged(u=>{adminUser=u;updateAdminAuthUI();if(isAdmin()){let pend=false;try{pend=localStorage.getItem("amu_pending_publish")==="1"}catch(e){}if(pend)publishOnline(false)}})}
+
 let ALL={};
 function rebuildAll(){ALL={};MENU.forEach(s=>s.items.forEach(it=>ALL[it.n]=it))}
 rebuildAll();
@@ -442,11 +491,11 @@ $("adminImgClear").onclick=()=>{$("adminImgUrl").value="";$("adminImgFile").valu
 $("adminImgFile").addEventListener("change",e=>{
   const f=e.target.files[0];if(!f)return;
   const url=URL.createObjectURL(f);const im=new Image();
-  im.onload=()=>{const max=600;const sc=Math.min(1,max/Math.max(im.width,im.height));const cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(url);$("adminImgUrl").value="";setAdminImg(cv.toDataURL("image/jpeg",.82));toast("تم تجهيز الصورة — اضغط حفظ الصنف")};
+  im.onload=()=>{const max=420;const sc=Math.min(1,max/Math.max(im.width,im.height));const cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(url);$("adminImgUrl").value="";setAdminImg(cv.toDataURL("image/jpeg",.72));toast("تم تجهيز الصورة — اضغط حفظ الصنف")};
   im.onerror=()=>{URL.revokeObjectURL(url);toast("تعذر قراءة الصورة")};
   im.src=url;
 });
-function saveMenu(){try{localStorage.setItem(MENU_KEY,JSON.stringify(MENU))}catch(e){toast("مساحة الحفظ ممتلئة — جرّب صورة أصغر أو صدّر المنيو");return}rebuildAll();pruneCart();saveCart();renderCats();renderMenu();renderAdmin()}
+function saveMenu(){try{localStorage.setItem(MENU_KEY,JSON.stringify(MENU))}catch(e){toast("مساحة الحفظ ممتلئة — جرّب صورة أصغر أو صدّر المنيو");return}rebuildAll();pruneCart();saveCart();renderCats();renderMenu();renderAdmin();try{localStorage.setItem("amu_pending_publish","1")}catch(e){}if(isAdmin())publishOnline(false);else toast("اتحفظ على جهازك — سجل دخول المدير عشان يظهر للعملاء")}
 function adminCatOptions(){
   $("adminCat").innerHTML=MENU.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
 }
@@ -471,6 +520,8 @@ $("adminLoginBtn").onclick=()=>{
   $("adminLogin").style.display="none";$("adminPanel").style.display="block";renderAdmin();
 };
 $("adminNew").onclick=clearAdminForm;
+$("adminSignIn").onclick=()=>{if(!auth){toast("تعذر فتح تسجيل الدخول");return}const pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({login_hint:ADMIN_EMAIL});auth.signInWithRedirect(pr)};
+$("adminPublish").onclick=()=>{if(isAdmin())publishOnline(false);else toast("سجل دخول المدير الأول")};
 $("adminSave").onclick=()=>{
   const cid=$("adminCat").value;const s=MENU.find(x=>x.id===cid);if(!s)return;
   const name=$("adminName").value.trim();if(!name){toast("اكتب اسم الصنف");$("adminName").focus();return}
@@ -499,7 +550,7 @@ let deferredInstall=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("installBtn").style.display="inline-block"});
 $("installBtn").onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$("installBtn").style.display="none"}};
 if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
-renderCats();renderMenu();
+renderCats();renderMenu();loadOnline();
 </script>
 <!-- shahino-visitor-counter -->
 <div id="shahino-vc" style="text-align:center;margin:22px auto 100px;font-family:inherit"><span style="display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:999px;border:1.5px solid rgba(128,128,128,.45);background:rgba(128,128,128,.12);font-weight:700;font-size:15px">👁 عدد الزوار: <b id="shahino-vc-num">…</b></span></div>
